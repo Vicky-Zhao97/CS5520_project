@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.loseit.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_recipe"
+        android:name="com.example.loseit.ui.recipe.RecipeFragment"
+        android:label="@string/recipe"
+        tools:layout="@layout/fragment_recipe" />
+
+    <fragment
+        android:id="@+id/navigation_forum"
+        android:name="com.example.loseit.ui.forum.ForumFragment"
+        android:label="@string/forum"
+        tools:layout="@layout/fragment_forum" />
+    <fragment
+        android:id="@+id/navigation_me"
+        android:name="com.example.loseit.ui.me.MeFragment"
+        android:label="@string/me"
+        tools:layout="@layout/fragment_me" />
+</navigation>

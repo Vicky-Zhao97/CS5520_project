@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "911005161452",
+    "project_id": "lose-it-2c3a3",
+    "storage_bucket": "lose-it-2c3a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911005161452:android:fda0aeebfdcb33784f52c9",
+        "android_client_info": {
+          "package_name": "com.example.loseit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911005161452-icvg32varqag1a6mh4jk7hsk4bb53s7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.loseit",
+            "certificate_hash": "ee5ebae63ec1eb5f2fef56d592123f1afbadf1f3"
+          }
+        },
+        {
+          "client_id": "911005161452-gbuo95so0tv7k37htqnj4pvid0p05h5r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApsRPZ93ssE02RBbbTrExyAaQiODhcor8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "911005161452-gbuo95so0tv7k37htqnj4pvid0p05h5r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

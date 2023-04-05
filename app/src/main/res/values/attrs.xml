@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScrollPickerView">
+        <!-- split character between scrollable list-->
+        <attr name="split_left" format="string" />
+        <attr name="split_right" format="string" />
+        <!--  central bar color -->
+        <attr name="central_bar_bg" format="reference" />
+    </declare-styleable>
+    <!-- attrs for diet card-->
+    <declare-styleable name="DietCard">
+        <!-- icon-->
+        <attr name="diet_icon" format="reference" />
+        <attr name="diet_name" format="string" />
+    </declare-styleable>
+</resources>

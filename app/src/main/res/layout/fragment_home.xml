@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragment_bg"
+    tools:context=".ui.home.HomeFragment">
+
+    <include
+        android:id="@+id/kcal_left"
+        layout="@layout/layout_left_kcal"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:minWidth="120dp"
+        android:minHeight="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/kcal_eat"
+        app:layout_constraintStart_toStartOf="@+id/btn_last_diet"
+        app:layout_constraintTop_toTopOf="@+id/kcal_eat" />
+
+    <include
+        android:id="@+id/kcal_eat"
+        layout="@layout/layout_eat_kcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:minWidth="120dp"
+        app:layout_constraintEnd_toStartOf="@+id/button_home_record_weight"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/kcal_left"
+        app:layout_constraintTop_toBottomOf="@+id/chart_progress" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart_progress"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_current_weight" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:descendantFocusability="blocksDescendants"
+        android:paddingBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_diet_date">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.example.loseit.ui.diet.DietCard
+                android:id="@+id/diet_breakfast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:diet_icon="@drawable/ic_breakfast"
+                app:diet_name="@string/breakfast" />
+
+            <com.example.loseit.ui.diet.DietCard
+                android:id="@+id/diet_lunch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:diet_icon="@drawable/ic_lunch"
+                app:diet_name="@string/lunch" />
+
+            <com.example.loseit.ui.diet.DietCard
+                android:id="@+id/diet_dinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:diet_icon="@drawable/ic_dinner"
+                app:diet_name="@string/dinner" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/btn_diet_next"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_forward"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_diet_date"
+        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="@+id/tv_diet_date" />
+
+    <TextView
+        android:id="@+id/tv_diet_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textSize="20sp"
+        app:drawableLeftCompat="@drawable/ic_date"
+        app:layout_constraintEnd_toStartOf="@+id/btn_diet_next"
+        app:layout_constraintStart_toEndOf="@+id/btn_last_diet"
+        app:layout_constraintTop_toBottomOf="@+id/kcal_eat" />
+
+    <ImageView
+        android:id="@+id/btn_last_diet"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_back"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_diet_date"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="@+id/tv_diet_date" />
+
+    <TextView
+        android:id="@+id/tv_home_current_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/current_weight"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_home_record_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/aqua_round_stroke"
+        android:minWidth="88dp"
+        android:minHeight="40dp"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/record_weight"
+        android:textColor="@color/aqua"
+        android:textSize="14sp"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/kcal_eat"
+        app:layout_constraintEnd_toEndOf="@+id/btn_diet_next"
+        app:layout_constraintTop_toTopOf="@+id/kcal_eat" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
