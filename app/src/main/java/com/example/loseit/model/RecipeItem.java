@@ -11,10 +11,10 @@ import java.util.Date;
  */
 public class RecipeItem implements Serializable {
     private String title;
-    private double totalKcal;
-    //private String image;
-    private ArrayList<DietItem> ingredients;
     private String description;
+    private ArrayList<DietItem> ingredients;
+    private double totalKcal;
+    private String imageUrl;
     @PropertyName("creationDate")   // The name of this field in the database is creationDate
     private Date createdAt;
 
@@ -24,11 +24,12 @@ public class RecipeItem implements Serializable {
     }
 
     public RecipeItem(String title, String description, ArrayList<DietItem> ingredients,
-                      double totalKcal) {
+                      double totalKcal, String url) {
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
         this.totalKcal = totalKcal;
+        this.imageUrl = url;
         this.createdAt = new Date();
     }
 
@@ -60,19 +61,17 @@ public class RecipeItem implements Serializable {
         return ingredients;
     }
 
-    public Date getCreationDate() { return createdAt; }
-
     public void setIngredients(ArrayList<DietItem> ingredients) {
         this.ingredients = ingredients;
     }
 
-    @Override
-    public String toString() {
-        String ans = String.format("<%s - %s kcal>\n", title, totalKcal);
-        ans += description + "\n";
-        for (DietItem ingredient : ingredients) {
-            ans += String.format("%s(%s kcal)  ",ingredient.getName(), ingredient.getKcal());
-        }
-        return ans;
+    public String getImageUrl() {
+        return imageUrl;
     }
+
+    public void setImageUrl(String url) {
+        this.imageUrl = url;
+    }
+
+    public Date getCreationDate() { return createdAt; }
 }

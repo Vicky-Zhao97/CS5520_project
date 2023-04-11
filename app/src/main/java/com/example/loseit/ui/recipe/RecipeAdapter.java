@@ -3,11 +3,13 @@ package com.example.loseit.ui.recipe;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.loseit.R;
 import com.example.loseit.model.RecipeItem;
 
@@ -43,16 +45,23 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTitleTextView;
         private TextView mKcalTextView;
+        private ImageView mImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTitleTextView = itemView.findViewById(R.id.title);
             mKcalTextView = itemView.findViewById(R.id.calorie);
+            mImageView = itemView.findViewById(R.id.image);
         }
 
         public void bind(RecipeItem recipe) {
             mTitleTextView.setText(recipe.getTitle());
             mKcalTextView.setText(String.format(Locale.ENGLISH,"%.2f KCAL", recipe.getTotalKcal()));
+            if (recipe.getImageUrl() != null) {
+                Glide.with(mImageView.getContext()).load(recipe.getImageUrl()).into(mImageView);
+            } else {
+                mImageView.setImageDrawable(null);
+            }
         }
     }
 }

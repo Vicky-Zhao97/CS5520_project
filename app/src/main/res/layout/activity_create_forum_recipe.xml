@@ -180,17 +180,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/labelTotalKcal" />
 
+    <ImageView
+        android:id="@+id/buttonAddPhoto"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:selectableItemBackground"
+        android:contentDescription="add a photo"
+        android:src="@drawable/ic_camera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalKcalHint"/>
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/buttonAddPhoto"/>
+<!--    android:src="@drawable/recipe_sample"-->
+
     <Button
         android:id="@+id/buttonCreationCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/cancel"
         android:backgroundTint="#EF6C00"
         app:layout_constraintEnd_toStartOf="@+id/buttonCreationSubmit"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalKcalHint" />
+        app:layout_constraintBottom_toTopOf="@+id/errorMsg" />
 
     <Button
         android:id="@+id/buttonCreationSubmit"
@@ -208,10 +230,9 @@
         android:id="@+id/errorMsg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:gravity="center"
         android:textColor="#E53935"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCreationCancel" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
