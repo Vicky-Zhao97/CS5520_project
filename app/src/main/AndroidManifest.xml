@@ -15,9 +15,12 @@
         android:theme="@style/Theme.LoseIt"
         tools:targetApi="31">
         <activity
+            android:name=".CreateForumRecipeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ResetUserInfoActivity"
-            android:theme="@style/lose_it_start_activity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/lose_it_start_activity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

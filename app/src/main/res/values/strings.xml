@@ -42,7 +42,7 @@
     <string name="left">LEFT:</string>
     <string name="kcal">KCAL</string>
     <string name="breakfast">Breakfast</string>
-    <string name="add_diet">Add new diet</string>
+    <string name="add_diet">Add new food</string>
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="kcal_">Kcal:</string>
@@ -51,7 +51,7 @@
     <string name="err_msg_invalid_kcal">Kcal can not be less than 0!</string>
     <string name="err_msg_empty_kcal">Kcal can not be empty!</string>
     <string name="hint">Hint</string>
-    <string name="delete_diet_hint">Are you sure to delete this diet?</string>
+    <string name="delete_diet_hint">Are you sure to delete?</string>
     <string name="yes">Yes</string>
     <string name="error_msg_longin_failed">User name or password error!</string>
     <string name="error_msg_sign_up_failed">Sign up failed! Please try again. </string>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragment_bg"
+    android:padding="16dp"
+    tools:context=".CreateForumRecipeActivity">
+
+    <TextView
+        android:id="@+id/activityTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="@color/aqua"
+        android:textStyle="bold"
+        android:text="Create Your Recipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/labelRecipeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left"
+        android:minWidth="60dp"
+        android:text="Recipe Title:"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/activityTitle"
+        app:layout_constraintEnd_toStartOf="@+id/editRecipeTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editRecipeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="text"
+        android:minHeight="40dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/labelRecipeTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/labelRecipeTitle"
+        app:layout_constraintTop_toTopOf="@+id/labelRecipeTitle"/>
+
+    <!-- Description-->
+    <TextView
+        android:id="@+id/labelDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:minWidth="60dp"
+        android:text="Description:"
+        android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelRecipeTitle" />
+
+    <ScrollView
+        android:id="@+id/scrollViewDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@+id/labelDescription">
+
+        <EditText
+            android:id="@+id/editDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:maxHeight="100dp"
+            android:hint="\n\n\n\n\n"
+            android:padding="6dp" />
+    </ScrollView>
+
+    <!-- Ingredients -->
+    <LinearLayout
+        android:id="@+id/linearLayoutIngredientsLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollViewDescription">
+
+        <TextView
+            android:id="@+id/labelIngredients"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="left"
+            android:minWidth="130dp"
+            android:text="Ingredients:"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/buttonAddIngredient"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="add new ingredient"
+            android:src="@drawable/ic_add"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewIngredientsList"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutIngredientsLabel">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:drawable/screen_background_light_transparent">
+            <com.example.loseit.ui.diet.DietItemList
+                android:id="@+id/ingredientsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingEnd="6dp"
+                android:paddingBottom="6dp"
+                android:orientation="vertical"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+    <!-- Total kCal-->
+    <TextView
+        android:id="@+id/labelTotalKcal"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:minWidth="60dp"
+        android:text="Total(kCal):"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/editTotalKcal"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollViewIngredientsList" />
+
+    <EditText
+        android:id="@+id/editTotalKcal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:minHeight="40dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/labelTotalKcal"
+        app:layout_constraintTop_toTopOf="@+id/labelTotalKcal"
+        app:layout_constraintBottom_toBottomOf="@+id/labelTotalKcal" />
+
+    <TextView
+        android:id="@+id/totalKcalHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:text="Total calories are automatically generated based on ingredients. \nYou can modify it manually"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelTotalKcal" />
+
+    <Button
+        android:id="@+id/buttonCreationCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/cancel"
+        android:backgroundTint="#EF6C00"
+        app:layout_constraintEnd_toStartOf="@+id/buttonCreationSubmit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalKcalHint" />
+
+    <Button
+        android:id="@+id/buttonCreationSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@android:string/ok"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonCreationCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCreationCancel"
+        app:layout_constraintTop_toTopOf="@+id/buttonCreationCancel" />
+
+    <TextView
+        android:id="@+id/errorMsg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="#E53935"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCreationCancel" />
+</androidx.constraintlayout.widget.ConstraintLayout>
