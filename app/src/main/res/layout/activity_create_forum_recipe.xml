@@ -181,16 +181,28 @@
         app:layout_constraintTop_toBottomOf="@id/labelTotalKcal" />
 
     <ImageView
-        android:id="@+id/buttonAddPhoto"
+        android:id="@+id/buttonTakePhoto"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:background="?android:selectableItemBackground"
-        android:contentDescription="add a photo"
+        android:contentDescription="take a photo by camera"
         android:src="@drawable/ic_camera"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/totalKcalHint"/>
+
+    <ImageView
+        android:id="@+id/buttonChoosePhoto"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:selectableItemBackground"
+        android:contentDescription="choose a photo from local album"
+        android:src="@drawable/ic_album"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonTakePhoto"/>
 
     <ImageView
         android:id="@+id/buttonDeletePhoto"
@@ -211,7 +223,7 @@
         android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/buttonAddPhoto"/>
+        app:layout_constraintTop_toTopOf="@id/buttonTakePhoto"/>
 <!--    android:src="@drawable/recipe_sample"-->
 
     <Button

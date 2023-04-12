@@ -7,6 +7,7 @@ import com.google.firebase.storage.UploadTask;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
@@ -18,7 +19,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.loseit.databinding.ActivityCreateForumRecipeBinding;
@@ -37,8 +37,10 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
     public static final String DB_FORUM_RECIPE_PATH = "recipes";
     public static final String DB_FORUM_RECIPE_IMG_PATH = "recipe_images";
     public static final String TAG_INGREDIENT_DIALOG = "add ingredient dialog";
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1; // photo from camera
+    private static final int REQUEST_CHOOSE_PHOTO = 2; // photo from local album
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
+    private static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 200;
     private String mCurrentPhotoPath;
     private Uri mPhotoUri = null;
 
@@ -64,8 +66,11 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
             binding.editTotalKcal.setText(String.valueOf(totalKcal));
         });
 
-        binding.buttonAddPhoto.setOnClickListener(view -> {
+        binding.buttonTakePhoto.setOnClickListener(view -> {
             takePhoto();
+        });
+        binding.buttonChoosePhoto.setOnClickListener(view -> {
+            choosePhoto();
         });
 
         binding.buttonDeletePhoto.setOnClickListener(view -> {
@@ -152,7 +157,24 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
     }
 
     /**
-     * take photo
+     * choose photo from local album
+     */
+    private void choosePhoto() {
+        // check permission for reading external storage
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE);
+            return;
+        }
+        // start intent for choosing photo
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
+    }
+
+    /**
+     * take photo by camera
      */
     private void takePhoto() {
         // check camera permission
@@ -201,9 +223,15 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            binding.photo.setImageURI(mPhotoUri);
-            binding.buttonDeletePhoto.setVisibility(View.VISIBLE);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CHOOSE_PHOTO) {
+                mPhotoUri = data.getData();
+                binding.photo.setImageURI(mPhotoUri);
+                binding.buttonDeletePhoto.setVisibility(View.VISIBLE);
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                binding.photo.setImageURI(mPhotoUri);
+                binding.buttonDeletePhoto.setVisibility(View.VISIBLE);
+            }
         }
     }
 
