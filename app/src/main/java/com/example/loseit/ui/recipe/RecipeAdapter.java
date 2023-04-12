@@ -1,5 +1,6 @@
 package com.example.loseit.ui.recipe;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.loseit.R;
+import com.example.loseit.RecipeDetailActivity;
 import com.example.loseit.model.RecipeItem;
 
 import java.text.SimpleDateFormat;
@@ -20,15 +22,16 @@ import java.util.Locale;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private ArrayList<RecipeItem> mRecipes;
-
     public RecipeAdapter(ArrayList<RecipeItem> recipes) {
         mRecipes = recipes;
     }
+    public static final String KEY_CLICKED_RECIPE = "clicked_recipe";
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_recipe_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_recipe_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -36,6 +39,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecipeItem recipe = mRecipes.get(position);
         holder.bind(recipe);
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
+            intent.putExtra(KEY_CLICKED_RECIPE, recipe);
+            view.getContext().startActivity(intent);
+        });
     }
 
     @Override

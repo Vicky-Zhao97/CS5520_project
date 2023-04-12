@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoseIt"
         tools:targetApi="31">
+        <activity
+            android:name=".RecipeDetailActivity"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.loseit.fileprovider"
@@ -27,6 +30,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name=".CreateForumRecipeActivity"
             android:exported="false" />
