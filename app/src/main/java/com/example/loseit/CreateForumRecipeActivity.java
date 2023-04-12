@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private String mCurrentPhotoPath;
-    private Uri mPhotoUri;
+    private Uri mPhotoUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,12 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
 
         binding.buttonAddPhoto.setOnClickListener(view -> {
             takePhoto();
+        });
+
+        binding.buttonDeletePhoto.setOnClickListener(view -> {
+            binding.photo.setImageDrawable(null);
+            mPhotoUri = null;
+            binding.buttonDeletePhoto.setVisibility(View.INVISIBLE);
         });
 
         binding.buttonCreationSubmit.setOnClickListener(view -> {
@@ -101,46 +108,47 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
         }
         double totalKcal = Double.parseDouble(totalKcalString);
 
-        // Upload photo to Firebase Storage
-        StorageReference folderRef = FirebaseStorage.getInstance().getReference()
-                .child(DB_FORUM_RECIPE_IMG_PATH + "/");
-        StorageReference photoRef = folderRef.child(mPhotoUri.getLastPathSegment());
-        UploadTask uploadTask = photoRef.putFile(mPhotoUri);
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            Task<Uri> downloadUrlTask = photoRef.getDownloadUrl();
-            downloadUrlTask.addOnSuccessListener(downloadUrl -> {
-                // Create new RecipeItem
-                RecipeItem newRecipe = new RecipeItem(title, description,
-                        binding.ingredientsList.getDietItems(), totalKcal, downloadUrl.toString());
-                // Upload RecipeItem to Firestore
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection(DB_FORUM_RECIPE_PATH).add(newRecipe)
-                        .addOnSuccessListener(documentReference -> {
-                            String recipeId = documentReference.getId();
-                            Log.d("CreateForumRecipe", "create recipe: " + recipeId);
-                            Toast.makeText(this, "recipe created", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(this, "recipe created failed", Toast.LENGTH_SHORT).show();
-                        });
+        // Upload RecipeItem to Firestore
+        if (mPhotoUri == null) {
+            RecipeItem newRecipe = new RecipeItem(title, description,
+                    binding.ingredientsList.getDietItems(), totalKcal, "");
+            uploadRecipe(newRecipe);
+        } else {
+            // Upload photo to Firebase Storage
+            StorageReference folderRef = FirebaseStorage.getInstance().getReference()
+                    .child(DB_FORUM_RECIPE_IMG_PATH + "/");
+            StorageReference photoRef = folderRef.child(mPhotoUri.getLastPathSegment());
+            UploadTask uploadTask = photoRef.putFile(mPhotoUri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                Task<Uri> downloadUrlTask = photoRef.getDownloadUrl();
+                downloadUrlTask.addOnSuccessListener(downloadUrl -> {
+                    // Upload Recipe
+                    RecipeItem newRecipe = new RecipeItem(title, description,
+                            binding.ingredientsList.getDietItems(), totalKcal, downloadUrl.toString());
+                    uploadRecipe(newRecipe);
+                });
+            }).addOnFailureListener(e -> {
+                Toast.makeText(this, "upload photo failed", Toast.LENGTH_SHORT).show();
             });
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "upload photo failed", Toast.LENGTH_SHORT).show();
-        });
-
-//        RecipeItem newRecipe = new RecipeItem(title, description,
-//                binding.ingredientsList.getDietItems(), totalKcal);
-//        // update database
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection(DB_FORUM_RECIPE_PATH).add(newRecipe)
-//                .addOnSuccessListener(documentReference -> {
-//                    String recipeId = documentReference.getId();
-//                    Log.d("CreateForumRecipe", "create recipe: " + recipeId);
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.e("CreateForumRecipe", "create recipe failed");
-//                });
+        }
         return true;
+    }
+
+    /**
+     * Upload the created recipe to firebase. Called by saveRecipe().
+     * @param newRecipe a RecipeItem object to be uploaded.
+     */
+    private void uploadRecipe(RecipeItem newRecipe) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(DB_FORUM_RECIPE_PATH).add(newRecipe)
+                .addOnSuccessListener(documentReference -> {
+                    String recipeId = documentReference.getId();
+                    Log.d("CreateForumRecipe", "create recipe: " + recipeId);
+                    Toast.makeText(this, "recipe created", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "recipe created failed", Toast.LENGTH_SHORT).show();
+                });
     }
 
     /**
@@ -175,7 +183,7 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
     }
 
     /**
-     * Create a temporary file for the photo
+     * Create a temporary file for the photo. Called by takePhoto().
      * @return a temporary file
      * @throws IOException when failed to create a file
      */
@@ -195,6 +203,7 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             binding.photo.setImageURI(mPhotoUri);
+            binding.buttonDeletePhoto.setVisibility(View.VISIBLE);
         }
     }
 

@@ -57,10 +57,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         public void bind(RecipeItem recipe) {
             mTitleTextView.setText(recipe.getTitle());
             mKcalTextView.setText(String.format(Locale.ENGLISH,"%.2f KCAL", recipe.getTotalKcal()));
-            if (recipe.getImageUrl() != null) {
+            if (recipe.getImageUrl() != "") {
                 Glide.with(mImageView.getContext()).load(recipe.getImageUrl()).into(mImageView);
             } else {
-                mImageView.setImageDrawable(null);
+                mImageView.setImageResource(R.drawable.ic_dinner);
             }
         }
     }
