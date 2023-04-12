@@ -70,7 +70,16 @@
         android:layout_height="30dp"
         android:background="?android:selectableItemBackground"
         android:src="@drawable/ic_trash"
-        android:visibility="invisible"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/calorie"/>
+
+    <ImageView
+        android:id="@+id/buttonCollect"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/selector_collection"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/calorie"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

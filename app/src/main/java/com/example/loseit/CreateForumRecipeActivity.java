@@ -36,6 +36,8 @@ import java.util.Date;
 
 public class CreateForumRecipeActivity extends AppCompatActivity {
     ActivityCreateForumRecipeBinding binding;
+
+    public static final String DB_COLLECTION_PATH = "collection";
     public static final String DB_FORUM_RECIPE_PATH = "recipes";
     public static final String DB_FORUM_RECIPE_IMG_PATH = "recipe_images";
     public static final String TAG_INGREDIENT_DIALOG = "add ingredient dialog";

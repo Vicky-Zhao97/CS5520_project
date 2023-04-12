@@ -2,10 +2,13 @@ package com.example.loseit.ui.login_sign_in;
 
 import static com.example.loseit.StartActivity.DB_USER_INFO_PATH;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.loseit.MainActivity;
@@ -21,6 +25,7 @@ import com.example.loseit.StartActivity;
 import com.example.loseit.databinding.FragmentLoginSignInBinding;
 import com.example.loseit.databinding.PanelSignInBinding;
 import com.example.loseit.databinding.PanelLoginBinding;
+import com.example.loseit.utils.SPUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -77,6 +82,25 @@ public class LoginSignInFragment extends Fragment {
         binding.signInPanel.buttonSignIn.setOnClickListener(view -> {
             signIn();
         });
+        //TODO delete this after debug
+//        PanelLoginBinding loginPanel = binding.loginPanel;
+//        loginPanel.editEmailLoginIn.setText("1@q.com");
+//        loginPanel.editPasswordLoginIn.setText("111111");
+//        login();
+//        PanelSignInBinding signInPanel = binding.signInPanel;
+//        signInPanel.editEmail.setText("2@q.com");
+//        signInPanel.editUsernameSignIn.setText("wwww");
+//        signInPanel.editPasswordSignIn.setText("111111");
+
+        PanelLoginBinding loginPanel = binding.loginPanel;
+        String email = SPUtils.getString("email", "");
+        String password = SPUtils.getString("password","");
+        if (!TextUtils.isEmpty(email)){
+            loginPanel.editEmailLoginIn.setText(email);
+        }
+        if (!TextUtils.isEmpty(password)){
+            loginPanel.editPasswordLoginIn.setText(password);
+        }
         return binding.getRoot();
     }
 
@@ -121,9 +145,11 @@ public class LoginSignInFragment extends Fragment {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
+                        SPUtils.putString("email",email);
+                        SPUtils.putString("password",password);
                         checkUserInfo(Objects.requireNonNull(mAuth.getCurrentUser()));
                     } else {
-                        // If login fails, display a message to the user.
+                        // If sign in fails, display a message to the user.
                         //Log.w("TAG", "signInWithEmail:failure", task.getException());
                         showMsg(getString(R.string.error_msg_longin_failed),
                                 binding.getRoot().getContext().getColor(R.color.error_msg_bg));

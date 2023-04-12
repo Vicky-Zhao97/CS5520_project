@@ -1,49 +1,77 @@
 package com.example.loseit;
 
 import static com.example.loseit.StartActivity.DB_USER_INFO_PATH;
+import static com.example.loseit.ui.user_info.GenderPanelViewSetting.MALE;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.loseit.model.DailyWeight;
 import com.example.loseit.model.Diet;
-import com.example.loseit.model.DietItem;
+import com.example.loseit.model.Food;
 import com.example.loseit.model.UserInfo;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.jar.Attributes;
 
 
 public class MainViewModel extends ViewModel {
+    public static final String DB_FOOD_CALORIES = "food_calories";
     //data key used in updateEatKcal method
     public static final String DIET_BREAKFAST = "breakfast";
     public static final String DIET_LUNCH = "lunch";
     public static final String DIET_DINNER = "dinner";
     //map for saving total eat kcal of breakfast, lunch and dinner
     private final HashMap<String, Integer> eatKcalMap;
+
     //live data saving user information
     private final MutableLiveData<UserInfo> userInfoLiveData;
+
     //live data saving eat kcal of current showing diet
     private final MutableLiveData<Integer> eatKcalLiveData;
+
+    //live data saving left kcal of current showing diet
+    private final MutableLiveData<Integer> leftKcalLiveData;
+
+    //live data saving a list of food calories
+    private final MutableLiveData<ArrayList<Food>> FoodLiveData;
+    private final MutableLiveData<String> KcalLiveData;
+
     //current showing diet in diet list of user info
     private int currentShowDietIndex = -1;
 
     public MainViewModel() {
         userInfoLiveData = new MutableLiveData<>();
         eatKcalLiveData = new MutableLiveData<>(0);
+        leftKcalLiveData = new MutableLiveData<>(0);
+        FoodLiveData = new MutableLiveData<>(new ArrayList<>());
+        KcalLiveData = new MutableLiveData<>("");
         eatKcalMap = new HashMap<>();
         eatKcalMap.put(DIET_BREAKFAST, 0);
         eatKcalMap.put(DIET_LUNCH, 0);
@@ -85,6 +113,15 @@ public class MainViewModel extends ViewModel {
     }
 
     /**
+     * observe left kcal change
+     *
+     * @return MutableLiveData<Integer>
+     */
+    public MutableLiveData<Integer> observeLeftKcal() {
+        return leftKcalLiveData;
+    }
+
+    /**
      * update eat kcal of current showing diet
      *
      * @param type String
@@ -96,6 +133,20 @@ public class MainViewModel extends ViewModel {
         totalEatKcal += eatKcalMap.get(DIET_LUNCH);
         totalEatKcal += eatKcalMap.get(DIET_DINNER);
         eatKcalLiveData.postValue(totalEatKcal);
+
+        //refresh left kcal
+        UserInfo userInfo = getUserInfo();
+        assert userInfo != null;
+        double K;
+        if (Objects.equals(userInfo.getGender(), MALE)) {
+            K = 5;
+        } else {
+            K = -161;
+        }
+        double BMR = 10 * getCurrentWeight() + 6.25 * userInfo.getHeight()
+                - 5 * UserInfo.getAge(userInfo.getBirth()) + K;
+        double maxLeftKcal = BMR - userInfo.getGoalWeightLoss() / 7. * 2.2046 * 1800;
+        leftKcalLiveData.postValue((int) (maxLeftKcal - totalEatKcal));
     }
 
     /**
@@ -284,6 +335,89 @@ public class MainViewModel extends ViewModel {
         }
         //sync user info
         setUserInfo(getUserInfo());
+    }
+
+    /**
+     * observe food calories change
+     *
+     * @return MutableLiveData<ArrayList < Food>>
+     */
+    public MutableLiveData<ArrayList<Food>> observeFoodLiveData() {
+        return FoodLiveData;
+    }
+    public MutableLiveData<String> observeKcalLiveData() {
+        return KcalLiveData;
+    }
+
+    /**
+     * filter food from database by name
+     *
+     * @param foodName String
+     */
+    public void fetchFood(String foodName) {
+        //firestore api
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db.collection(DB_FOOD_CALORIES);
+        //filter by name
+        Query query = collectionReference.whereGreaterThanOrEqualTo(Food.FILTER_NAME, foodName)
+                .whereLessThanOrEqualTo(Food.FILTER_NAME,
+                        String.format("%s\uf8ff", foodName)).limit(5);
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            ArrayList<Food> Food = new ArrayList<>();
+            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                if (documentSnapshot.exists()) {
+                    Food fc = documentSnapshot.toObject(Food.class);
+                    Food.add(fc);
+                }
+            }
+            //notify data change
+            FoodLiveData.postValue(Food);
+        }).addOnFailureListener(e -> {
+            //handle errors
+        });
+
+    }
+
+
+    public void fetchKcal(String foodName) {
+        RequestParams requestParams = new RequestParams("https://api.api-ninjas.com/v1/nutrition?query=" + foodName);
+        requestParams.addHeader("X-Api-Key","C+0ABlX/CZ/s6r3EGfAxyw==2RR2KE5bgoihWl3k");
+        requestParams.addHeader("Content-Type","application/json");
+        x.http().get(requestParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if (TextUtils.isEmpty(result))
+                    return;
+                try {
+                    JSONArray jsa = new JSONArray(result);
+                    if (jsa.length()==0)
+                        return;
+                    JSONObject jsonObject = jsa.optJSONObject(0);
+                    if (jsonObject==null)
+                        return;
+                    String calories = jsonObject.optString("calories");
+                    KcalLiveData.postValue(calories);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     /**

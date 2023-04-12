@@ -3,6 +3,7 @@ package com.example.loseit.ui.home;
 import static com.example.loseit.StartActivity.DB_USER_INFO_PATH;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -49,7 +51,9 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     //manage the chart to keep HomeFragment simple
     private ProcessChartManager chartManager;
+    //loading dialog
     private LoadingDialog loadingDialog;
+    //view model
     private MainViewModel mainViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -96,6 +100,26 @@ public class HomeFragment extends Fragment {
             //refresh eat kcal
             binding.kcalEat.tvEatKcalValue.setText(String.format(Locale.ENGLISH,
                     "%d Kcal", integer));
+        });
+
+        //observe left kcal change and refresh view
+        mainViewModel.observeLeftKcal().observe(activity, integer -> {
+            //show left kcal
+            binding.kcalLeft.tvLeftKcalValue.setText(String.format(Locale.ENGLISH,
+                    "%d Kcal", integer));
+            Context context=binding.getRoot().getContext();
+            if (integer < 0) {
+                //warn when left kcal is less than 0
+                binding.kcalLeft.leftKcalContainer.setBackground(AppCompatResources.getDrawable(
+                        context , R.drawable.red_round_stroke
+                ));
+                binding.kcalLeft.tvLeftKcalName.setTextColor(context.getColor(R.color.error_msg_bg));
+            } else {
+                binding.kcalLeft.leftKcalContainer.setBackground(AppCompatResources.getDrawable(
+                        binding.getRoot().getContext(), R.drawable.green_round_stroke
+                ));
+                binding.kcalLeft.tvLeftKcalName.setTextColor(context.getColor(R.color.primary_green));
+            }
         });
 
         //next diet
@@ -209,9 +233,6 @@ public class HomeFragment extends Fragment {
         }
         //show weight chart
         chartManager.showChartOfWeight(userInfo);
-        //show left kcal
-        binding.kcalLeft.tvLeftKcalValue.setText(String.format(Locale.ENGLISH,
-                "%d Kcal", userInfo.getLeftKcal()));
         //get current showing diet
         Diet diet = mainViewModel.getCurrentShowDiet();
         //show current weight

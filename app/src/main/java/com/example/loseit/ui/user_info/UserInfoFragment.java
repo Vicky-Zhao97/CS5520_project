@@ -307,7 +307,7 @@ public class UserInfoFragment extends Fragment {
         //goal weight page
         //default set goal weight to 76kg
         WeightPanelViewSetting goalWeightViewSetting = new WeightPanelViewSetting(VIEW_GOAL_WEIGHT);
-        goalWeightViewSetting.setSelectedLeftIndex(76 - WeightPanelViewSetting.minWeight);
+        goalWeightViewSetting.setSelectedLeftIndex(50 - WeightPanelViewSetting.minWeight);
         viewSettings.put(VIEW_GOAL_WEIGHT, goalWeightViewSetting);
         //projected progress page
         viewSettings.put(VIEW_PROJECTED_PROGRESS, new ProjectedProgressViewSetting(VIEW_PROJECTED_PROGRESS));

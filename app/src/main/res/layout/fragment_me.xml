@@ -8,6 +8,21 @@
     android:background="@color/fragment_bg"
     tools:context=".ui.me.MeFragment">
 
+    <TextView
+        android:id="@+id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:background="@color/primary_green"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:text="@string/my_information"
+        android:textStyle="bold" />
+
+
     <TableLayout
         android:id="@+id/table_user_info"
         android:layout_width="match_parent"
@@ -21,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6">
+        app:layout_constraintTop_toBottomOf="@+id/title">
 
         <TableRow
             android:layout_width="match_parent"
@@ -184,19 +199,6 @@
                 android:padding="4dp" />
         </TableRow>
     </TableLayout>
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/my_information"
-        app:layout_constraintBottom_toTopOf="@+id/table_user_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
     <Button
         android:id="@+id/button_log_out"

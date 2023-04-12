@@ -19,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.loseit.databinding.ActivityMainBinding;
+import com.gyf.immersionbar.ImmersionBar;
 
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_USER_INFO = "user_info";
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.primary_green).init();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

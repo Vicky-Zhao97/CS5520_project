@@ -20,6 +20,16 @@ public class RecipeItem implements Serializable {
     @PropertyName("creationDate")   // The name of this field in the database is creationDate
     private Date createdAt;
 
+    private boolean isCollected;
+
+    public boolean isCollected() {
+        return isCollected;
+    }
+
+    public void setCollected(boolean collected) {
+        isCollected = collected;
+    }
+
     public RecipeItem() {
         ingredients = new ArrayList<>();
         createdAt = new Date();

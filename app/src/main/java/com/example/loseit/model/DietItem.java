@@ -8,14 +8,17 @@ import java.io.Serializable;
 public class DietItem implements Serializable {
     private String name;
     private double kcal;
+    //amount in ounce
+    private double amountInOunce;
+    private double caloriesPerOunce;
 
     public DietItem() {
 
     }
 
-    public DietItem(String name, double kcal) {
+    public DietItem(String name, double amountInOunce, double caloriesPerOunce) {
         this.name = name;
-        this.kcal = kcal;
+        this.kcal = amountInOunce * caloriesPerOunce;
     }
 
     public void setKcal(double kcal) {
@@ -32,5 +35,21 @@ public class DietItem implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public double getAmountInOunce() {
+        return amountInOunce;
+    }
+
+    public void setAmountInOunce(double amountInOunce) {
+        this.amountInOunce = amountInOunce;
+    }
+
+    public double getCaloriesPerOunce() {
+        return caloriesPerOunce;
+    }
+
+    public void setCaloriesPerOunce(double caloriesPerOunce) {
+        this.caloriesPerOunce = caloriesPerOunce;
     }
 }

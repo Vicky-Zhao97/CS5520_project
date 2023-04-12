@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.loseit.model.RecipeItem;
 import com.example.loseit.ui.recipe.IngredientsAdapter;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -27,6 +28,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this).init();
         setContentView(R.layout.activity_recipe_detail);
 
         mRecipe = (RecipeItem) getIntent().getSerializableExtra(KEY_CLICKED_RECIPE);

@@ -153,7 +153,6 @@ public class UserInfo implements Serializable {
         Calendar nowCal = Calendar.getInstance();
         return nowCal.get(Calendar.YEAR) - birthCal.get(Calendar.YEAR);
     }
-
     /**
      * get total days to lose current weight to goal weight
      *

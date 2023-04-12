@@ -1,4 +1,4 @@
-package com.example.loseit.ui.forum;
+package com.example.loseit.ui.recipe;
 
 import static com.example.loseit.CreateForumRecipeActivity.DB_COLLECTION_PATH;
 import static com.example.loseit.CreateForumRecipeActivity.DB_FORUM_RECIPE_PATH;
@@ -14,30 +14,36 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
-import com.example.loseit.CreateForumRecipeActivity;
 import com.example.loseit.R;
 import com.example.loseit.RecipeDetailActivity;
-import com.example.loseit.databinding.FragmentForumBinding;
+import com.example.loseit.databinding.FragmentMyCollectBinding;
+import com.example.loseit.databinding.FragmentRecipeBinding;
 import com.example.loseit.model.CollectItem;
 import com.example.loseit.model.RecipeItem;
-import com.example.loseit.ui.recipe.RecipeAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.AggregateQuerySnapshot;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -53,26 +59,21 @@ import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
-public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+public class MyClollectFragment extends Fragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
 
-    private FragmentForumBinding binding;
-    private RecipeAdapter mAdapter;
+    private FragmentMyCollectBinding binding;
     private ArrayList<RecipeItem> mRecipes = new ArrayList<>();
     private CollectionReference mRecipesRef = FirebaseFirestore.getInstance().collection(DB_FORUM_RECIPE_PATH);
+
     private BGARecyclerViewAdapter bgaRefreshLayoutAdapter;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentForumBinding.inflate(inflater, container, false);
+        binding = FragmentMyCollectBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        binding.createButton.setOnClickListener(view -> {
-            createRecipeActivity();
-        });
-
         initRefreshLayout();
-        binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(2,RecyclerView.VERTICAL));
-        bgaRefreshLayoutAdapter = new BGARecyclerViewAdapter<RecipeItem>(binding.recycler, R.layout.card_recipe_item_2) {
+        binding.recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        bgaRefreshLayoutAdapter = new BGARecyclerViewAdapter<RecipeItem>(binding.recycler, R.layout.card_recipe_item) {
             @Override
             protected void fillData(BGAViewHolderHelper helper, int position, RecipeItem recipe) {
                 helper.getTextView(R.id.title).setText(recipe.getTitle());
@@ -80,7 +81,7 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
                 helper.getTextView(R.id.date).setText(sdf.format(recipe.getCreationDate()));
 
                 if (recipe.getAuthorId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                    helper.getImageView(R.id.buttonDeleteRecipe).setVisibility(View.GONE);
+                    helper.getImageView(R.id.buttonDeleteRecipe).setVisibility(View.VISIBLE);
                     helper.getImageView(R.id.buttonCollect).setVisibility(View.GONE);
                 } else {
                     helper.getImageView(R.id.buttonDeleteRecipe).setVisibility(View.GONE);
@@ -118,11 +119,6 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
                     helper.getImageView(R.id.image).setImageResource(R.drawable.ic_dinner);
                 }
 
-                helper.getConvertView().setOnClickListener(view -> {
-                    Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
-                    intent.putExtra(KEY_CLICKED_RECIPE, recipe);
-                    view.getContext().startActivity(intent);
-                });
 
                 helper.getImageView(R.id.buttonCollect).setOnClickListener(view -> {
                     if (helper.getImageView(R.id.buttonCollect).isSelected()){
@@ -139,6 +135,7 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
                                         }
                                         helper.getImageView(R.id.buttonCollect).setSelected(false);
                                         Toast.makeText(view.getContext(), "Recipe cancel collect", Toast.LENGTH_SHORT).show();
+                                        bgaRefreshLayoutAdapter.removeItem(position);
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -147,28 +144,13 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
                                         Toast.makeText(view.getContext(), "Failed to collect recipe", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                    }else{
-                        CollectItem collectItem = new CollectItem();
-                        collectItem.setRecipeId(recipe.getId());
-                        collectItem.setUserID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        collectItem.setCreatedAt(new Date());
-                        FirebaseFirestore.getInstance().collection(DB_COLLECTION_PATH)
-                                .add(collectItem)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        helper.getImageView(R.id.buttonCollect).setSelected(true);
-                                        Toast.makeText(view.getContext(), "Recipe collected", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                    }
-                                });
-
                     }
+                });
+
+                helper.getConvertView().setOnClickListener(view -> {
+                    Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
+                    intent.putExtra(KEY_CLICKED_RECIPE, recipe);
+                    view.getContext().startActivity(intent);
                 });
             }
         };
@@ -177,30 +159,55 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
         return root;
     }
 
-    private void createRecipeActivity() {
-        Intent intent = new Intent(getActivity(), CreateForumRecipeActivity.class);
-        startActivity(intent);
-    }
+    public void initData(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+        if (TextUtils.isEmpty(uid))
+            return;
 
-    private void initData() {
-        mRecipesRef.orderBy("creationDate", Query.Direction.DESCENDING)
-                .addSnapshotListener((snapshots, e) -> {
-                    if (e != null) {
-                        if (binding!=null)
-                            binding.refreshlayout.endRefreshing();
-                        return;
+        FirebaseFirestore.getInstance().collection(DB_COLLECTION_PATH)
+                .whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
+                        if (error!=null){
+                            if (binding!=null)
+                                binding.refreshlayout.endRefreshing();
+                            return;
+                        }
+                        ArrayList<String> recipeIds = new ArrayList<>();
+                        for (QueryDocumentSnapshot doc : snapshots) {
+                            CollectItem collect = doc.toObject(CollectItem.class);
+                            recipeIds.add(collect.getRecipeId());
+                        }
+                        if (recipeIds.size()==0){
+                            if (binding!=null)
+                                binding.refreshlayout.endRefreshing();
+                            return;
+                        }
+                        // Listen for realtime updates from Firestore
+                        mRecipesRef.orderBy("creationDate", Query.Direction.DESCENDING)
+                                .whereIn("id",recipeIds)
+                                .addSnapshotListener((sss, e) -> {
+                                    if (e != null) {
+                                        if (binding!=null)
+                                            binding.refreshlayout.endRefreshing();
+                                        return;
+                                    }   // Error occurred
+                                    ArrayList<RecipeItem> recipes = new ArrayList<>();
+                                    for (QueryDocumentSnapshot doc : sss) {
+                                        RecipeItem recipe = doc.toObject(RecipeItem.class);
+                                        recipes.add(recipe);
+                                    }
+                                    mRecipes.clear();
+                                    mRecipes.addAll(recipes);
+                                    bgaRefreshLayoutAdapter.setData(mRecipes);
+                                    if (binding==null)
+                                        return;
+                                    binding.refreshlayout.endRefreshing();
+                                });
                     }
-                    ArrayList<RecipeItem> recipes = new ArrayList<>();
-                    for (QueryDocumentSnapshot doc : snapshots) {
-                        RecipeItem recipe = doc.toObject(RecipeItem.class);
-                        recipes.add(recipe);
-                    }
-                    mRecipes.clear();
-                    mRecipes.addAll(recipes);
-                    bgaRefreshLayoutAdapter.setData(recipes);
-                    if (binding==null)
-                        return;
-                    binding.refreshlayout.endRefreshing();
                 });
     }
 
@@ -210,7 +217,7 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
         binding = null;
     }
 
-    public void initRefreshLayout() {
+    private void initRefreshLayout() {
         binding.refreshlayout.setDelegate(this);
         BGAStickinessRefreshViewHolder refreshViewHolder = new BGAStickinessRefreshViewHolder(getContext(),true);
         refreshViewHolder.setRotateImage(R.mipmap.ic_launcher);
@@ -230,4 +237,5 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
         return false;
     }
+
 }
