@@ -43,6 +43,17 @@
         app:layout_constraintBottom_toTopOf="@id/calorie"/>
 
     <TextView
+        android:id="@+id/author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="by author"
+        android:textSize="15dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintStart_toEndOf="@id/date"
+        app:layout_constraintTop_toTopOf="@id/date"
+        app:layout_constraintBottom_toBottomOf="@id/date"/>
+
+    <TextView
         android:id="@+id/calorie"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -59,8 +70,7 @@
         android:layout_height="30dp"
         android:background="?android:selectableItemBackground"
         android:src="@drawable/ic_trash"
-
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/calorie"/>
-<!--    android:visibility="invisible"-->
 </androidx.constraintlayout.widget.ConstraintLayout>

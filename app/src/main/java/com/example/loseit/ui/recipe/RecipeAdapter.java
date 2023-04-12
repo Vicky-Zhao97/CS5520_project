@@ -1,6 +1,7 @@
 package com.example.loseit.ui.recipe;
 
 import static com.example.loseit.CreateForumRecipeActivity.DB_FORUM_RECIPE_PATH;
+import static com.example.loseit.StartActivity.DB_USER_INFO_PATH;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.loseit.R;
 import com.example.loseit.RecipeDetailActivity;
 import com.example.loseit.model.RecipeItem;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -48,6 +50,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             intent.putExtra(KEY_CLICKED_RECIPE, recipe);
             view.getContext().startActivity(intent);
         });
+        if (recipe.getAuthorId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            holder.mDeleteButton.setVisibility(View.VISIBLE);
+        } else {
+            holder.mDeleteButton.setVisibility(View.INVISIBLE);
+        }
         holder.mDeleteButton.setOnClickListener(view -> {
             FirebaseFirestore.getInstance().collection(DB_FORUM_RECIPE_PATH).document(recipe.getId())
                     .delete()
@@ -68,6 +75,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTitleTextView;
         private TextView mDateTextView;
+        private TextView mAuthorTextView;
         private TextView mKcalTextView;
         private ImageView mImageView;
         private ImageView mDeleteButton;
@@ -76,6 +84,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             super(itemView);
             mTitleTextView = itemView.findViewById(R.id.title);
             mDateTextView = itemView.findViewById(R.id.date);
+            mAuthorTextView = itemView.findViewById(R.id.author);
             mKcalTextView = itemView.findViewById(R.id.calorie);
             mImageView = itemView.findViewById(R.id.image);
             mDeleteButton = itemView.findViewById(R.id.buttonDeleteRecipe);
@@ -83,9 +92,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         public void bind(RecipeItem recipe) {
             mTitleTextView.setText(recipe.getTitle());
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             mDateTextView.setText(sdf.format(recipe.getCreationDate()));
+
+            FirebaseFirestore.getInstance().collection(DB_USER_INFO_PATH)
+                    .document(recipe.getAuthorId()).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String authorName = documentSnapshot.getString("userName");
+                            mAuthorTextView.setText("by " + authorName);
+                        }
+                    });
+
             mKcalTextView.setText(String.format(Locale.ENGLISH,"%.2f kCal", recipe.getTotalKcal()));
+
             if (recipe.getImageUrl() != "") {
                 Glide.with(mImageView.getContext()).load(recipe.getImageUrl()).into(mImageView);
             } else {

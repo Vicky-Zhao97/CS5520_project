@@ -11,6 +11,7 @@ import java.util.Date;
  */
 public class RecipeItem implements Serializable {
     private String id;
+    private String authorId;
     private String title;
     private String description;
     private ArrayList<DietItem> ingredients;
@@ -24,8 +25,9 @@ public class RecipeItem implements Serializable {
         createdAt = new Date();
     }
 
-    public RecipeItem(String title, String description, ArrayList<DietItem> ingredients,
+    public RecipeItem(String authorId, String title, String description, ArrayList<DietItem> ingredients,
                       double totalKcal, String url) {
+        this.authorId = authorId;
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
@@ -40,6 +42,14 @@ public class RecipeItem implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
     public String getTitle() {

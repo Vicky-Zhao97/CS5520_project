@@ -1,6 +1,8 @@
 package com.example.loseit;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -113,8 +115,9 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
         double totalKcal = Double.parseDouble(totalKcalString);
 
         // Upload RecipeItem to Firestore
+        String authorId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (mPhotoUri == null) {
-            RecipeItem newRecipe = new RecipeItem(title, description,
+            RecipeItem newRecipe = new RecipeItem(authorId, title, description,
                     binding.ingredientsList.getDietItems(), totalKcal, "");
             uploadRecipe(newRecipe);
         } else {
@@ -127,7 +130,7 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
                 Task<Uri> downloadUrlTask = photoRef.getDownloadUrl();
                 downloadUrlTask.addOnSuccessListener(downloadUrl -> {
                     // Upload Recipe
-                    RecipeItem newRecipe = new RecipeItem(title, description,
+                    RecipeItem newRecipe = new RecipeItem(authorId, title, description,
                             binding.ingredientsList.getDietItems(), totalKcal, downloadUrl.toString());
                     uploadRecipe(newRecipe);
                 });
