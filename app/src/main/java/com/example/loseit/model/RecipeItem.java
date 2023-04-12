@@ -10,6 +10,7 @@ import java.util.Date;
  * data class represent user information for lose weight
  */
 public class RecipeItem implements Serializable {
+    private String id;
     private String title;
     private String description;
     private ArrayList<DietItem> ingredients;
@@ -31,6 +32,14 @@ public class RecipeItem implements Serializable {
         this.totalKcal = totalKcal;
         this.imageUrl = url;
         this.createdAt = new Date();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {

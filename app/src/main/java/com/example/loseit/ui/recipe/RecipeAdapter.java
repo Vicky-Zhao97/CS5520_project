@@ -1,11 +1,14 @@
 package com.example.loseit.ui.recipe;
 
+import static com.example.loseit.CreateForumRecipeActivity.DB_FORUM_RECIPE_PATH;
+
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.loseit.R;
 import com.example.loseit.RecipeDetailActivity;
 import com.example.loseit.model.RecipeItem;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +48,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             intent.putExtra(KEY_CLICKED_RECIPE, recipe);
             view.getContext().startActivity(intent);
         });
+        holder.mDeleteButton.setOnClickListener(view -> {
+            FirebaseFirestore.getInstance().collection(DB_FORUM_RECIPE_PATH).document(recipe.getId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(view.getContext(), "Recipe deleted", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(view.getContext(), "Failed to delete recipe", Toast.LENGTH_SHORT).show();
+                    });
+        });
     }
 
     @Override
@@ -56,6 +70,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         private TextView mDateTextView;
         private TextView mKcalTextView;
         private ImageView mImageView;
+        private ImageView mDeleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,6 +78,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             mDateTextView = itemView.findViewById(R.id.date);
             mKcalTextView = itemView.findViewById(R.id.calorie);
             mImageView = itemView.findViewById(R.id.image);
+            mDeleteButton = itemView.findViewById(R.id.buttonDeleteRecipe);
         }
 
         public void bind(RecipeItem recipe) {

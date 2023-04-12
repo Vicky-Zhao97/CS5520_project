@@ -53,4 +53,14 @@
         app:layout_constraintBottom_toBottomOf="@id/image"/>
 
 
+    <ImageView
+        android:id="@+id/buttonDeleteRecipe"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="?android:selectableItemBackground"
+        android:src="@drawable/ic_trash"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/calorie"/>
+<!--    android:visibility="invisible"-->
 </androidx.constraintlayout.widget.ConstraintLayout>

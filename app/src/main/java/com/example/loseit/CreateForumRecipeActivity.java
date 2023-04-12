@@ -146,9 +146,15 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(DB_FORUM_RECIPE_PATH).add(newRecipe)
                 .addOnSuccessListener(documentReference -> {
-                    String recipeId = documentReference.getId();
-                    Log.d("CreateForumRecipe", "create recipe: " + recipeId);
-                    Toast.makeText(this, "recipe created", Toast.LENGTH_SHORT).show();
+                    String newRecipeId = documentReference.getId();
+                    newRecipe.setId(newRecipeId);
+                    db.collection(DB_FORUM_RECIPE_PATH).document(newRecipeId).set(newRecipe)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(this, "recipe created", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this, "recipe created failed", Toast.LENGTH_SHORT).show();
+                            });
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "recipe created failed", Toast.LENGTH_SHORT).show();
