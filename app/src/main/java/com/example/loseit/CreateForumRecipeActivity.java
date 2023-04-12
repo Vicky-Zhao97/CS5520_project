@@ -95,20 +95,19 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
      */
     private boolean saveRecipe() {
         // Check the required inputs
-        binding.errorMsg.setText("");
         String title = binding.editRecipeTitle.getText().toString();
         if (title.equals("")) {
-            binding.errorMsg.setText("Title cannot be empty!");
+            Toast.makeText(this, "Title cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
         String description = binding.editDescription.getText().toString();
         if (description.equals("")) {
-            binding.errorMsg.setText("Description cannot be empty!");
+            Toast.makeText(this, "Description cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
         String totalKcalString = binding.editTotalKcal.getText().toString();
         if (totalKcalString.equals("")) {
-            binding.errorMsg.setText("Total kCal cannot be empty!");
+            Toast.makeText(this, "Total kCal cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
         double totalKcal = Double.parseDouble(totalKcalString);

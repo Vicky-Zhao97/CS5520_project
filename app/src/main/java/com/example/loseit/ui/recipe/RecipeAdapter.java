@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.example.loseit.R;
 import com.example.loseit.model.RecipeItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -44,19 +45,23 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTitleTextView;
+        private TextView mDateTextView;
         private TextView mKcalTextView;
         private ImageView mImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTitleTextView = itemView.findViewById(R.id.title);
+            mDateTextView = itemView.findViewById(R.id.date);
             mKcalTextView = itemView.findViewById(R.id.calorie);
             mImageView = itemView.findViewById(R.id.image);
         }
 
         public void bind(RecipeItem recipe) {
             mTitleTextView.setText(recipe.getTitle());
-            mKcalTextView.setText(String.format(Locale.ENGLISH,"%.2f KCAL", recipe.getTotalKcal()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            mDateTextView.setText(sdf.format(recipe.getCreationDate()));
+            mKcalTextView.setText(String.format(Locale.ENGLISH,"%.2f kCal", recipe.getTotalKcal()));
             if (recipe.getImageUrl() != "") {
                 Glide.with(mImageView.getContext()).load(recipe.getImageUrl()).into(mImageView);
             } else {

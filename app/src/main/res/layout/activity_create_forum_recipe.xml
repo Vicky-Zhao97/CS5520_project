@@ -220,7 +220,7 @@
     <ImageView
         android:id="@+id/photo"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="76dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/buttonTakePhoto"/>
@@ -230,13 +230,13 @@
         android:id="@+id/buttonCreationCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="26dp"
         android:text="@string/cancel"
         android:backgroundTint="#EF6C00"
         app:layout_constraintEnd_toStartOf="@+id/buttonCreationSubmit"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/errorMsg" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonChoosePhoto" />
 
     <Button
         android:id="@+id/buttonCreationSubmit"
@@ -249,14 +249,4 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonCreationCancel"
         app:layout_constraintTop_toTopOf="@+id/buttonCreationCancel" />
-
-    <TextView
-        android:id="@+id/errorMsg"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="#E53935"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
