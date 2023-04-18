@@ -50,6 +50,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -187,8 +188,7 @@ public class MyClollectFragment extends Fragment implements BGARefreshLayout.BGA
                             return;
                         }
                         // Listen for realtime updates from Firestore
-                        mRecipesRef.orderBy("creationDate", Query.Direction.DESCENDING)
-                                .whereIn("id",recipeIds)
+                        mRecipesRef.whereIn("id",recipeIds)
                                 .addSnapshotListener((sss, e) -> {
                                     if (e != null) {
                                         if (binding!=null)
@@ -200,6 +200,7 @@ public class MyClollectFragment extends Fragment implements BGARefreshLayout.BGA
                                         RecipeItem recipe = doc.toObject(RecipeItem.class);
                                         recipes.add(recipe);
                                     }
+                                    Collections.reverse(recipes);
                                     mRecipes.clear();
                                     mRecipes.addAll(recipes);
                                     bgaRefreshLayoutAdapter.setData(mRecipes);

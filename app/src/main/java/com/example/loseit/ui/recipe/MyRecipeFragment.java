@@ -121,8 +121,7 @@ public class MyRecipeFragment extends Fragment implements BGARefreshLayout.BGARe
         if (TextUtils.isEmpty(uid))
             return;
         // Listen for realtime updates from Firestore
-        mRecipesRef.orderBy("creationDate", Query.Direction.DESCENDING)
-                .whereEqualTo("authorId",currentUser.getUid())
+        mRecipesRef.whereEqualTo("authorId",currentUser.getUid())
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
                         if (binding!=null)
@@ -134,6 +133,7 @@ public class MyRecipeFragment extends Fragment implements BGARefreshLayout.BGARe
                         RecipeItem recipe = doc.toObject(RecipeItem.class);
                         recipes.add(recipe);
                     }
+                    Collections.reverse(recipes);
                     mRecipes.clear();
                     mRecipes.addAll(recipes);
                     if (binding!=null)

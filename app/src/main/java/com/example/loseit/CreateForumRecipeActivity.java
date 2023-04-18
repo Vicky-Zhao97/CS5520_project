@@ -127,32 +127,25 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
                     binding.ingredientsList.getDietItems(), totalKcal, "");
             uploadRecipe(newRecipe);
         }else {
-            File file = new File(mPhotoUri.getPath());
-            if(file.length()==0){
-                RecipeItem newRecipe = new RecipeItem(authorId, title, description,
-                        binding.ingredientsList.getDietItems(), totalKcal, "");
-                uploadRecipe(newRecipe);
-            }else{
-                // Upload photo to Firebase Storage
-                StorageReference folderRef = FirebaseStorage.getInstance().getReference()
-                        .child(DB_FORUM_RECIPE_IMG_PATH + "/");
-                StorageReference photoRef = folderRef.child(mPhotoUri.getLastPathSegment());
-                UploadTask uploadTask = photoRef.putFile(mPhotoUri);
-                uploadTask.addOnSuccessListener(taskSnapshot -> {
-                    Task<Uri> downloadUrlTask = photoRef.getDownloadUrl();
-                    downloadUrlTask.addOnSuccessListener(downloadUrl -> {
-                        // Upload Recipe
-                        RecipeItem newRecipe = new RecipeItem(authorId, title, description,
-                                binding.ingredientsList.getDietItems(), totalKcal, downloadUrl.toString());
-                        uploadRecipe(newRecipe);
-                    });
-                }).addOnFailureListener(e -> {
-                    if (loadingDialog!=null&&!loadingDialog.isShowing()){
-                        loadingDialog.dismiss();
-                    }
-                    Toast.makeText(this, "upload photo failed", Toast.LENGTH_SHORT).show();
+            // Upload photo to Firebase Storage
+            StorageReference folderRef = FirebaseStorage.getInstance().getReference()
+                    .child(DB_FORUM_RECIPE_IMG_PATH + "/");
+            StorageReference photoRef = folderRef.child(mPhotoUri.getLastPathSegment());
+            UploadTask uploadTask = photoRef.putFile(mPhotoUri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                Task<Uri> downloadUrlTask = photoRef.getDownloadUrl();
+                downloadUrlTask.addOnSuccessListener(downloadUrl -> {
+                    // Upload Recipe
+                    RecipeItem newRecipe = new RecipeItem(authorId, title, description,
+                            binding.ingredientsList.getDietItems(), totalKcal, downloadUrl.toString());
+                    uploadRecipe(newRecipe);
                 });
-            }
+            }).addOnFailureListener(e -> {
+                if (loadingDialog!=null&&!loadingDialog.isShowing()){
+                    loadingDialog.dismiss();
+                }
+                Toast.makeText(this, "upload photo failed", Toast.LENGTH_SHORT).show();
+            });
         }
         return true;
     }
@@ -270,6 +263,8 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
             } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 binding.photo.setImageURI(mPhotoUri);
                 binding.buttonDeletePhoto.setVisibility(View.VISIBLE);
+            }else{
+                mPhotoUri = null;
             }
         }
     }
