@@ -8,6 +8,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -141,7 +142,7 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
                 });
             }).addOnFailureListener(e -> {
                 if (loadingDialog!=null&&!loadingDialog.isShowing()){
-                    loadingDialog.hide();
+                    loadingDialog.dismiss();
                 }
                 Toast.makeText(this, "upload photo failed", Toast.LENGTH_SHORT).show();
             });
@@ -179,6 +180,12 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
                     }
                     Toast.makeText(this, "recipe created failed", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**

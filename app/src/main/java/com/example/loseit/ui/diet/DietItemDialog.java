@@ -172,7 +172,9 @@ public class DietItemDialog extends DialogFragment {
             }else{
                 binding.editDietDialogWeight.setText("");
             }
-            loadingDialog.hide();
+            if (loadingDialog!=null&&loadingDialog.isShowing()){
+                loadingDialog.dismiss();
+            }
         };
         mainViewModel.observeKcalLiveData().observe(requireActivity(),KcalObserver);
         return binding.getRoot();
@@ -190,6 +192,7 @@ public class DietItemDialog extends DialogFragment {
         mainViewModel.observeKcalLiveData().removeObserver(KcalObserver);
         foodListObserver = null;
         KcalObserver = null;
+        loadingDialog=null;
     }
 
     @NonNull
