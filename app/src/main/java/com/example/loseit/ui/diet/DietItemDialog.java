@@ -27,6 +27,7 @@ import com.example.loseit.R;
 import com.example.loseit.databinding.DialogDietItemBinding;
 import com.example.loseit.model.DietItem;
 import com.example.loseit.model.Food;
+import com.example.loseit.ui.home.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -52,7 +53,7 @@ public class DietItemDialog extends DialogFragment {
     Observer<ArrayList<Food>> foodListObserver;
     Observer<String> KcalObserver;
 
-
+    private LoadingDialog loadingDialog;
     /**
      * listener for watching dialog closed
      */
@@ -75,6 +76,8 @@ public class DietItemDialog extends DialogFragment {
                              @Nullable Bundle savedInstanceState) {
         //view binding
         binding = DialogDietItemBinding.inflate(inflater, container, false);
+        loadingDialog = new LoadingDialog(getContext(),
+                getString(R.string.load_user_data));
         //disable auto cancel
         setCancelable(false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
@@ -98,8 +101,16 @@ public class DietItemDialog extends DialogFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 binding.tvDietDialogMsg.setText("");
+                mainViewModel.observeKcalLiveData().postValue("");
+                binding.editDietDialogWeight.setText("");
                 //fetch food list matched from database
 //                mainViewModel.fetchFood(editable.toString());
+            }
+        });
+        binding.ivSearchKcal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.editDietDialogKcal.requestFocus();
             }
         });
         binding.editDietDialogName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -109,6 +120,8 @@ public class DietItemDialog extends DialogFragment {
                     String foodName = binding.editDietDialogName.getText().toString();
                     if (TextUtils.isEmpty(foodName.trim()))
                         return;
+                    if (loadingDialog!=null&&!loadingDialog.isShowing())
+                        loadingDialog.show();
                     mainViewModel.fetchKcal(foodName);
                 }
             }
@@ -156,7 +169,10 @@ public class DietItemDialog extends DialogFragment {
             binding.editDietDialogKcal.setText(kcal);
             if (!TextUtils.isEmpty(kcal)){
                 binding.editDietDialogWeight.setText("1");
+            }else{
+                binding.editDietDialogWeight.setText("");
             }
+            loadingDialog.hide();
         };
         mainViewModel.observeKcalLiveData().observe(requireActivity(),KcalObserver);
         return binding.getRoot();

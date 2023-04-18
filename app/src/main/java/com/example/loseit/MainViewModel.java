@@ -14,6 +14,7 @@ import com.example.loseit.model.DailyWeight;
 import com.example.loseit.model.Diet;
 import com.example.loseit.model.Food;
 import com.example.loseit.model.UserInfo;
+import com.example.loseit.ui.home.LoadingDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -386,18 +387,25 @@ public class MainViewModel extends ViewModel {
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                if (TextUtils.isEmpty(result))
+                if (TextUtils.isEmpty(result)) {
+                    KcalLiveData.postValue("");
                     return;
+                }
                 try {
                     JSONArray jsa = new JSONArray(result);
-                    if (jsa.length()==0)
+                    if (jsa.length()==0){
+                        KcalLiveData.postValue("");
                         return;
+                    }
                     JSONObject jsonObject = jsa.optJSONObject(0);
-                    if (jsonObject==null)
+                    if (jsonObject==null) {
+                        KcalLiveData.postValue("");
                         return;
+                    }
                     String calories = jsonObject.optString("calories");
                     KcalLiveData.postValue(calories);
                 } catch (JSONException e) {
+                    KcalLiveData.postValue("");
                     throw new RuntimeException(e);
                 }
 
@@ -405,12 +413,12 @@ public class MainViewModel extends ViewModel {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                KcalLiveData.postValue("");
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
-
+                KcalLiveData.postValue("");
             }
 
             @Override

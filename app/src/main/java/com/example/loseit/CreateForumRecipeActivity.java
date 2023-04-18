@@ -1,5 +1,6 @@
 package com.example.loseit;
 
+import com.example.loseit.ui.home.LoadingDialog;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,13 +48,14 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
     private static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 200;
     private String mCurrentPhotoPath;
     private Uri mPhotoUri = null;
-
+    private LoadingDialog   loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCreateForumRecipeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        loadingDialog = new LoadingDialog(this,
+                getString(R.string.load_user_data));
         binding.buttonAddIngredient.setOnClickListener(view -> {
             DietItemDialog dialog = new DietItemDialog();
             dialog.show(getSupportFragmentManager(), TAG_INGREDIENT_DIALOG);
@@ -118,6 +120,7 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
 
         // Upload RecipeItem to Firestore
         String authorId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        loadingDialog.show();
         if (mPhotoUri == null) {
             RecipeItem newRecipe = new RecipeItem(authorId, title, description,
                     binding.ingredientsList.getDietItems(), totalKcal, "");
@@ -137,6 +140,9 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
                     uploadRecipe(newRecipe);
                 });
             }).addOnFailureListener(e -> {
+                if (loadingDialog!=null&&!loadingDialog.isShowing()){
+                    loadingDialog.hide();
+                }
                 Toast.makeText(this, "upload photo failed", Toast.LENGTH_SHORT).show();
             });
         }
@@ -155,13 +161,22 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
                     newRecipe.setId(newRecipeId);
                     db.collection(DB_FORUM_RECIPE_PATH).document(newRecipeId).set(newRecipe)
                             .addOnSuccessListener(aVoid -> {
+                                if (loadingDialog!=null&&!loadingDialog.isShowing()){
+                                    loadingDialog.hide();
+                                }
                                 Toast.makeText(this, "recipe created", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
+                                if (loadingDialog!=null&&!loadingDialog.isShowing()){
+                                    loadingDialog.hide();
+                                }
                                 Toast.makeText(this, "recipe created failed", Toast.LENGTH_SHORT).show();
                             });
                 })
                 .addOnFailureListener(e -> {
+                    if (loadingDialog!=null&&!loadingDialog.isShowing()){
+                        loadingDialog.hide();
+                    }
                     Toast.makeText(this, "recipe created failed", Toast.LENGTH_SHORT).show();
                 });
     }

@@ -6,18 +6,30 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
-
-    <TextView
-        android:id="@+id/tv_diet_dialog_name"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
+    <LinearLayout
+        android:id="@+id/ll_diet_dialog_name"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:minWidth="60dp"
-        android:text="@string/food_name"
-        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/edit_diet_dialog_name"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_diet_dialog_name"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:text="@string/food_name"
+            android:textSize="20sp" />
+        <ImageView
+            android:id="@+id/iv_search_kcal"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/baseline_search_24" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView4"
@@ -57,7 +69,7 @@
         android:paddingEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_diet_dialog_name" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_diet_dialog_name" />
 
     <EditText
         android:id="@+id/edit_diet_dialog_kcal"
@@ -123,7 +135,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="@string/yes"
+        android:text="Add"
         app:layout_constraintBottom_toBottomOf="@+id/button_diet_dialog_cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
