@@ -100,7 +100,6 @@ public class MyRecipeFragment extends Fragment implements BGARefreshLayout.BGARe
                             .delete()
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(view.getContext(), "Recipe deleted", Toast.LENGTH_SHORT).show();
-                                bgaRefreshLayoutAdapter.removeItem(position);
                             })
                             .addOnFailureListener(e -> {
                                 Toast.makeText(view.getContext(), "Failed to delete recipe", Toast.LENGTH_SHORT).show();

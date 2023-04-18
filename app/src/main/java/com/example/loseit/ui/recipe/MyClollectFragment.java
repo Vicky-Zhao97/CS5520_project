@@ -136,7 +136,6 @@ public class MyClollectFragment extends Fragment implements BGARefreshLayout.BGA
                                         }
                                         helper.getImageView(R.id.buttonCollect).setSelected(false);
                                         Toast.makeText(view.getContext(), "Recipe cancel collect", Toast.LENGTH_SHORT).show();
-                                        bgaRefreshLayoutAdapter.removeItem(position);
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -183,8 +182,11 @@ public class MyClollectFragment extends Fragment implements BGARefreshLayout.BGA
                             recipeIds.add(collect.getRecipeId());
                         }
                         if (recipeIds.size()==0){
-                            if (binding!=null)
+                            if (binding!=null){
                                 binding.refreshlayout.endRefreshing();
+                            }
+                            mRecipes.clear();
+                            bgaRefreshLayoutAdapter.clear();
                             return;
                         }
                         // Listen for realtime updates from Firestore
