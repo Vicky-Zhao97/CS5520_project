@@ -136,6 +136,7 @@ public class MyClollectFragment extends Fragment implements BGARefreshLayout.BGA
                                         }
                                         helper.getImageView(R.id.buttonCollect).setSelected(false);
                                         Toast.makeText(view.getContext(), "Recipe cancel collect", Toast.LENGTH_SHORT).show();
+                                        initData();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
