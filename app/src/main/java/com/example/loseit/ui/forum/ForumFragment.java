@@ -111,7 +111,7 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
                             }
                         });
 
-                helper.getTextView(R.id.calorie).setText(String.format(Locale.ENGLISH,"%.2f kCal", recipe.getTotalKcal()));
+                helper.getTextView(R.id.calorie).setText(String.format(Locale.ENGLISH,"%.0f kCal", recipe.getTotalKcal()));
                 if (!TextUtils.isEmpty(recipe.getImageUrl())){
                     Glide.with(helper.getConvertView().getContext()).load(recipe.getImageUrl()).into(helper.getImageView(R.id.image));
                 }else{
