@@ -266,6 +266,8 @@ public class CreateForumRecipeActivity extends AppCompatActivity {
             }else{
                 mPhotoUri = null;
             }
+        } else if (resultCode == RESULT_CANCELED) {
+            mPhotoUri = null;
         }
     }
 
