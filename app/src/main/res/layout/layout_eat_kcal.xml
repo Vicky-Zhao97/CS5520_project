@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/eat"
-        android:textColor="#FB8C00"
+        android:textColor="@color/orange"
         android:textSize="14sp"
         android:textStyle="bold" />
 

@@ -7,8 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary_green">#498F53</color>
+    <color name="primary_green">#6FB8A1</color>
+    <color name="aqua">#6FB8A1</color>
+    <color name="primary_green_transparent">#346FB8A1</color>
     <color name="error_msg_bg">#CF403D</color>
     <color name="fragment_bg">#F1EDE7</color>
-    <color name="aqua">#009688</color>
+    <color name="orange">#FB8C00</color>
 </resources>

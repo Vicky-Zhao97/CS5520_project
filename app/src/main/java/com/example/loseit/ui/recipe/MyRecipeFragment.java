@@ -83,11 +83,11 @@ public class MyRecipeFragment extends Fragment implements BGARefreshLayout.BGARe
                             }
                         });
 
-                helper.getTextView(R.id.calorie).setText(String.format(Locale.ENGLISH,"%.2f kCal", recipe.getTotalKcal()));
+                helper.getTextView(R.id.calorie).setText(String.format(Locale.ENGLISH,"%.0f kCal", recipe.getTotalKcal()));
                 if (!TextUtils.isEmpty(recipe.getImageUrl())){
                     Glide.with(helper.getConvertView().getContext()).load(recipe.getImageUrl()).into(helper.getImageView(R.id.image));
                 }else{
-                    helper.getImageView(R.id.image).setImageResource(R.drawable.ic_dinner);
+                    helper.getImageView(R.id.image).setImageResource(R.mipmap.ic_launcher);
                 }
 
                 helper.getConvertView().setOnClickListener(view -> {

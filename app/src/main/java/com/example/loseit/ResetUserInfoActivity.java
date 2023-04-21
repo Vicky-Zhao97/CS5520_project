@@ -1,12 +1,18 @@
 package com.example.loseit;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.loseit.databinding.ActivityResetUserInfoBinding;
 import com.example.loseit.model.UserInfo;
 import com.example.loseit.ui.user_info.UserInfoFragment;
@@ -23,6 +29,15 @@ public class ResetUserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityResetUserInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Glide.with(this)
+                .load(R.drawable.login_bg)
+                .centerCrop()
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        binding.getRoot().setBackground(resource);
+                    }
+                });
         //get the user information passed from MainActivity
         userInfo = (UserInfo) getIntent().
                 getSerializableExtra(MainActivity.KEY_USER_INFO);

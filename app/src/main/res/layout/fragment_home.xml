@@ -1,198 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="@color/fragment_bg"
-    tools:context=".ui.home.HomeFragment">
+    android:background="@color/fragment_bg">
 
-    <TextView
-        android:id="@+id/title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center"
-        android:background="@color/primary_green"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:text="@string/app_name"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content">
-        <View
-            android:layout_width="0sp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            />
-        <include
-            android:id="@+id/kcal_eat"
-            layout="@layout/layout_eat_kcal"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:minWidth="120dp"
-            tools:layout_editor_absoluteX="78dp"
-            tools:layout_editor_absoluteY="264dp" />
-        <View
-            android:layout_width="0sp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            />
-        <include
-            android:id="@+id/kcal_left"
-            layout="@layout/layout_left_kcal"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:minWidth="120dp"
-            android:minHeight="60dp"
-            tools:layout_editor_absoluteX="10dp"
-            tools:layout_editor_absoluteY="264dp" />
-        <View
-            android:layout_width="0sp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/tv_home_current_weight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/current_weight"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart_progress"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-         />
-
-
-    <Button
-        android:id="@+id/button_home_record_weight"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:background="@drawable/aqua_round_stroke"
-        android:minWidth="88dp"
-        android:minHeight="40dp"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="4dp"
-        android:text="@string/record_weight"
-        android:textColor="@color/aqua"
-        android:textSize="14sp"
-        android:layout_marginTop="16dp"
-        app:backgroundTint="@null"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/btn_last_diet"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_back"
-             />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/tv_diet_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="40dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textSize="20sp"
-            app:drawableLeftCompat="@drawable/ic_date"
-           />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"/>
-
-         <ImageView
-            android:id="@+id/btn_diet_next"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_forward" />
-
-
-    </LinearLayout>
-
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="8dp"
-        android:descendantFocusability="blocksDescendants"
-        android:paddingBottom="4dp">
-
-        <LinearLayout
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@color/fragment_bg"
+            tools:context=".ui.home.HomeFragment">
 
-            <com.example.loseit.ui.diet.DietCard
-                android:id="@+id/diet_breakfast"
+            <TextView
+                android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:diet_icon="@drawable/ic_breakfast"
-                app:diet_name="@string/breakfast" />
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:background="@color/primary_green"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:text="@string/app_name"
+                android:textStyle="bold" />
 
-            <com.example.loseit.ui.diet.DietCard
-                android:id="@+id/diet_lunch"
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_width="0sp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    />
+                <include
+                    android:id="@+id/kcal_eat"
+                    layout="@layout/layout_eat_kcal"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:minWidth="120dp"
+                    tools:layout_editor_absoluteX="78dp"
+                    tools:layout_editor_absoluteY="264dp" />
+                <View
+                    android:layout_width="0sp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    />
+                <include
+                    android:id="@+id/kcal_left"
+                    layout="@layout/layout_left_kcal"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:minWidth="120dp"
+                    android:minHeight="60dp"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="264dp" />
+                <View
+                    android:layout_width="0sp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_home_current_weight"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:diet_icon="@drawable/ic_lunch"
-                app:diet_name="@string/lunch" />
+                android:text="@string/current_weight"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.example.loseit.ui.diet.DietCard
-                android:id="@+id/diet_dinner"
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart_progress"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:diet_icon="@drawable/ic_dinner"
-                app:diet_name="@string/dinner" />
+                android:layout_height="200dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+
+            <Button
+                android:id="@+id/button_home_record_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/aqua_round_stroke"
+                android:minWidth="88dp"
+                android:minHeight="40dp"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="@string/record_today_weight"
+                android:textColor="@color/aqua"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"
+                app:backgroundTint="@null"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/btn_last_diet"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/ic_back"
+                    />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/tv_diet_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="40dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textSize="20sp"
+                    app:drawableLeftCompat="@drawable/ic_date"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/btn_diet_next"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/ic_forward" />
+
+
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
+                android:descendantFocusability="blocksDescendants"
+                android:paddingBottom="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.example.loseit.ui.diet.DietCard
+                        android:id="@+id/diet_breakfast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:diet_icon="@drawable/ic_breakfast"
+                        app:diet_name="@string/breakfast" />
+
+                    <com.example.loseit.ui.diet.DietCard
+                        android:id="@+id/diet_lunch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:diet_icon="@drawable/ic_lunch"
+                        app:diet_name="@string/lunch" />
+
+                    <com.example.loseit.ui.diet.DietCard
+                        android:id="@+id/diet_dinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:diet_icon="@drawable/ic_dinner"
+                        app:diet_name="@string/dinner" />
+                </LinearLayout>
+            </ScrollView>
+
+
+
+
         </LinearLayout>
-    </ScrollView>
 
+    </RelativeLayout>
 
-
-
-</LinearLayout>
+</ScrollView>

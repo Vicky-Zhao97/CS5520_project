@@ -1,5 +1,7 @@
 package com.example.loseit;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -7,9 +9,13 @@ import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.loseit.databinding.ActivityStartBinding;
 import com.example.loseit.ui.user_info.UserInfoFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -31,6 +37,16 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityStartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Glide.with(this)
+                .load(R.drawable.login_bg)
+                .centerCrop()
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        binding.getRoot().setBackground(resource);
+                    }
+                });
+
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         if (ActivityCompat.checkSelfPermission(this,

@@ -115,7 +115,7 @@ public class ForumFragment extends Fragment implements BGARefreshLayout.BGARefre
                 if (!TextUtils.isEmpty(recipe.getImageUrl())){
                     Glide.with(helper.getConvertView().getContext()).load(recipe.getImageUrl()).into(helper.getImageView(R.id.image));
                 }else{
-                    helper.getImageView(R.id.image).setImageResource(R.drawable.ic_dinner);
+                    helper.getImageView(R.id.image).setImageResource(R.mipmap.ic_launcher);
                 }
 
                 helper.getConvertView().setOnClickListener(view -> {

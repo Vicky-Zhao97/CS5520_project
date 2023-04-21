@@ -9,9 +9,9 @@
     <string name="sign_up">Sign up</string>
     <string name="email">Email</string>
     <string name="login_to_start">Login to start</string>
-    <string name="do_not_have_an_account_yet_sign_in">Do not have an account yet? <font color="#498F53">Sign up</font></string>
+    <string name="do_not_have_an_account_yet_sign_in">Do not have an account yet? <font color="#6FB8A1">Sign up</font></string>
     <string name="lose_it">Lose it!</string>
-    <string name="already_have_an_account_login">Already have an account? <font color="#498F53">Login</font></string>
+    <string name="already_have_an_account_login">Already have an account? <font color="#6FB8A1">Login</font></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="msg_empty_username_error">Username can not be empty!</string>
@@ -42,7 +42,7 @@
     <string name="left">LEFT</string>
     <string name="kcal">KCAL</string>
     <string name="breakfast">Breakfast</string>
-    <string name="add_diet">Add new diet</string>
+    <string name="add_diet">Add new food</string>
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="kcal_">Kcal:</string>
@@ -77,10 +77,10 @@
     <string name="msg_confirm_log_out">Are you sure to log out?</string>
     <string name="birth">Birth</string>
     <string name="record_weight">Record Weight</string>
-    <string name="record_today_weight">Record Today Weight</string>
+    <string name="record_today_weight">Record Today\'s Weight</string>
     <string name="error_msg_fecth_user_info">Failed to fetch user information!</string>
-    <string name="amount_ounce">Amount(ounce):</string>
-    <string name="calories_kcal_per_ounce">Calories(Kcal per ounce):</string>
+    <string name="amount_ounce">Amount:</string>
+    <string name="calories_kcal_per_ounce">Calories:</string>
     <string name="food_name">Food Name:</string>
     <string name="err_msg_empty_food_weight">Food weight can not be empty!</string>
 </resources>
